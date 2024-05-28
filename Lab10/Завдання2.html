@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Побудова еліпса</title>
+    <script>
+        function drawEllipseMosaic(horizontal, vertical) {
+            var container = document.getElementById("mosaic");
+            container.innerHTML = "";
+            var t = 0;
+            var dt = 0.01;
+            while (t <= 2 * Math.PI) {
+                var x = horizontal * Math.cos(t);
+                var y = vertical * Math.sin(t);
+                var dot = document.createElement("div");
+                dot.style.position = "absolute";
+                dot.style.width = "2px";
+                dot.style.height = "2px";
+                dot.style.backgroundColor = "black";
+                dot.style.left = (150 + x) + "px";
+                dot.style.top = (150 - y) + "px";
+                container.appendChild(dot);
+                t += dt;
+            }
+        }
+
+        function drawEllipseSVG(horizontal, vertical) {
+            var svg = document.getElementById("svg");
+            svg.innerHTML = `
+                <ellipse cx="150" cy="150" rx="${horizontal}" ry="${vertical}" style="fill:none;stroke:black;stroke-width:2" />
+                <line x1="${150 - horizontal}" y1="150" x2="${150 + horizontal}" y2="150" style="stroke:black;stroke-width:1" />
+                <line x1="150" y1="${150 - vertical}" x2="150" y2="${150 + vertical}" style="stroke:black;stroke-width:1" />
+            `;
+        }
+
+        function drawEllipseCanvas(horizontal, vertical) {
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.ellipse(150, 150, horizontal, vertical, 0, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(150 - horizontal, 150);
+            ctx.lineTo(150 + horizontal, 150);
+            ctx.moveTo(150, 150 - vertical);
+            ctx.lineTo(150, 150 + vertical);
+            ctx.stroke();
+        }
+
+        function drawEllipse() {
+            var horizontal = parseInt(document.getElementById("horizontal").value);
+            var vertical = parseInt(document.getElementById("vertical").value);
+            drawEllipseMosaic(horizontal, vertical);
+            drawEllipseSVG(horizontal, vertical);
+            drawEllipseCanvas(horizontal, vertical);
+        }
+    </script>
+</head>
+<body>
+    <label for="horizontal">Горизонтальна піввісь:</label>
+    <input type="text" id="horizontal" value="100">
+    <label for="vertical">Вертикальна піввісь:</label>
+    <input type="text" id="vertical" value="50">
+    <button onclick="drawEllipse()">Побудувати еліпс</button>
+    <div id="mosaic" style="position: relative; width: 300px; height: 300px;"></div>
+    <svg id="svg" width="300" height="300" style="border: 1px solid black;"></svg>
+    <canvas id="canvas" width="300" height="300" style="border: 1px solid black;"></canvas>
+</body>
+</html>

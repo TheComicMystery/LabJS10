@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Перегляд фотографій</title>
+    <script>
+        var photo = new Array();
+        photo["les"] = new Image(900, 550);
+        photo["les"].src = "forest.jpg";
+        photo["gory"] = new Image(900, 550);
+        photo["gory"].src = "hills.jpg";
+        photo["more"] = new Image(900, 550);
+        photo["more"].src = "sea.jpg";
+
+        function prosm(list) {
+            var d = list.options[list.selectedIndex].value;
+            document.fot.src = photo[d].src;
+        }
+    </script>
+</head>
+<body>
+    <select onchange="prosm(this)">
+        <option value="les">Ліс</option>
+        <option value="gory">Гори</option>
+        <option value="more">Море</option>
+    </select>
+    <br>
+    <img name="fot" src="forest.jpg" width="900" height="550">
+</body>
+</html>
